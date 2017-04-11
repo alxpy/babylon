@@ -513,8 +513,8 @@ pp.flowParseQualifiedTypeIdentifier = function (startPos, startLoc, id) {
 
   while (this.eat(tt.dot)) {
     const node2 = this.startNodeAt(startPos, startLoc);
-    node2.qualification = node;
-    node2.id = this.parseIdentifier();
+    node2.qualification = this.parseIdentifier();
+    node2.id = node;
     node = this.finishNode(node2, "QualifiedTypeIdentifier");
   }
 

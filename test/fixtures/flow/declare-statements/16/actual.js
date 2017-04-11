@@ -1,1 +1,1 @@
-declare class A extends C.B.D { }
+declare class A extends B.C.D { }
