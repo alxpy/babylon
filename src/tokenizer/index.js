@@ -567,21 +567,36 @@ export default class Tokenizer {
     const firstIsZero = this.input.charCodeAt(start) === 48; // '0'
     let isFloat = false;
 
-    if (!startsWithDot && this.readInt(10) === null) this.raise(start, "Invalid number");
+    if (!startsWithDot && this.readInt(10) === null) {
+      this.raise(start, "Invalid number");
+    }
+
     let next = this.input.charCodeAt(this.state.pos);
+
     if (next === 46) { // '.'
       ++this.state.pos;
       this.readInt(10);
       isFloat = true;
       next = this.input.charCodeAt(this.state.pos);
+      if (next === 59) { // ';'
+        this.raise(this.state.pos, "Invalid number");
+      }
     }
+
     if (next === 69 || next === 101) { // 'eE'
       next = this.input.charCodeAt(++this.state.pos);
-      if (next === 43 || next === 45) ++this.state.pos; // '+-'
-      if (this.readInt(10) === null) this.raise(start, "Invalid number");
+      if (next === 43 || next === 45) { // '+-'
+        ++this.state.pos;
+      }
+      if (this.readInt(10) === null) {
+        this.raise(start, "Invalid number");
+      }
       isFloat = true;
     }
-    if (isIdentifierStart(this.fullCharCodeAtPos())) this.raise(this.state.pos, "Identifier directly after number");
+
+    if (isIdentifierStart(this.fullCharCodeAtPos())) {
+      this.raise(this.state.pos, "Identifier directly after number");
+    }
 
     const str = this.input.slice(start, this.state.pos);
     let val;
