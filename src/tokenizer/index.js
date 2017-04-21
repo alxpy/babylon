@@ -568,7 +568,7 @@ export default class Tokenizer {
     let isFloat = false;
 
     if (!startsWithDot && this.readInt(10) === null) this.raise(start, "Invalid number");
-    if (octal && this.pos == start + 1) octal = false; // number === 0
+    if (octal && this.state.pos == start + 1) octal = false; // number === 0
 
     let next = this.input.charCodeAt(this.state.pos);
     if (next === 46 && !octal) { // '.'
